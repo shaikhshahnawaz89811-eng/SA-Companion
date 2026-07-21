@@ -19,9 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.sa.companion.commands.TaskParser
 import com.sa.companion.commands.TaskExecutor
+import android.speech.tts.TextToSpeech
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
-
+    
+    private lateinit var tts: TextToSpeech
+    
     private lateinit var speechRecognizer: SpeechRecognizer
 
     private var spokenText by mutableStateOf("AI Assistant Ready")
@@ -40,6 +44,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        tts = TextToSpeech(this) {
+            if (it == 
+        TextToSpeech.SUCCESS) {
+                tts.language = 
+        Locale("hi", "IN")
+            }
+        }
 
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
 
@@ -84,7 +96,14 @@ class MainActivity : ComponentActivity() {
 
                 $result
                 """.trimIndent()
-            }
+
+                tts.speak(
+                    result,
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    "SA_REPLY"
+                )
+                }
 
             override fun onPartialResults(partialResults: Bundle?) {}
 
