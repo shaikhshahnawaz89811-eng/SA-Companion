@@ -17,8 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.sa.companion.commands.TaskParser
-import com.sa.companion.commands.TaskExecutor
 
 class MainActivity : ComponentActivity() {
 
@@ -72,18 +70,7 @@ class MainActivity : ComponentActivity() {
                     ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                     ?.firstOrNull()
 
-                val command = text ?: "Nothing heard"
-
-                val tasks = TaskParser().parse(command)
-
-                val result = TaskExecutor().execute(tasks)
-
-                spokenText = """
-                You Said:
-                $command
-
-                $result
-                """.trimIndent()
+                spokenText = text ?: "Nothing heard"
             }
 
             override fun onPartialResults(partialResults: Bundle?) {}
