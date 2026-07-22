@@ -21,12 +21,17 @@ import com.sa.companion.commands.TaskParser
 import com.sa.companion.commands.TaskExecutor
 import android.speech.tts.TextToSpeech
 import java.util.Locale
+import android.media.MediaPlayer
+import java.io.File
+import android.media.MediaPlayer
 
 class MainActivity : ComponentActivity() {
     
     private lateinit var tts: TextToSpeech
     
     private lateinit var speechRecognizer: SpeechRecognizer
+
+    private var mediaPlayer: MediaPlayer? = null
 
     private var spokenText by mutableStateOf("AI Assistant Ready")
     private var isListening by mutableStateOf(false)
@@ -97,12 +102,8 @@ class MainActivity : ComponentActivity() {
                 $result
                 """.trimIndent()
 
-                tts.speak(
-                    result,
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    "SA_REPLY"
-                )
+                playSAVoice()
+
                 }
 
             override fun onPartialResults(partialResults: Bundle?) {}
@@ -136,6 +137,41 @@ class MainActivity : ComponentActivity() {
 
         speechRecognizer.startListening(intent)
     }
+
+    private fun playSAVoice() {
+
+    Thread {
+
+        try {
+
+            val url = URL("http://127.0.0.1:8080/voice")
+
+            val file = File(cacheDir, "sa_voice.wav")
+
+            url.openStream().use { input ->
+                file.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            runOnUiThread {
+
+                mediaPlayer?.release()
+
+                mediaPlayer = MediaPlayer().apply {
+                    setDataSource(file.absolutePath)
+                    prepare()
+                    start()
+                }
+
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }.start()
+}
 
     override fun onDestroy() {
         super.onDestroy()
