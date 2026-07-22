@@ -6,22 +6,32 @@ class TaskParser {
 
         val tasks = mutableListOf<Task>()
 
-        val text = command.lowercase()
+        val text = command
+            .lowercase()
+            .trim()
 
-        if ("time" in text)
-            tasks.add(Task("TIME", ""))
+        if (text.contains("time")) {
+            tasks.add(Task("TIME", command))
+        }
 
-        if ("battery" in text)
-            tasks.add(Task("BATTERY", ""))
+        if (text.contains("battery")) {
+            tasks.add(Task("BATTERY", command))
+        }
 
-        if ("volume" in text)
-            tasks.add(Task("VOLUME", ""))
+        if (text.contains("volume")) {
+            tasks.add(Task("VOLUME", command))
+        }
 
-        if ("message" in text || "whatsapp" in text)
-            tasks.add(Task("WHATSAPP", text))
+        if (
+            text.contains("message") ||
+            text.contains("whatsapp")
+        ) {
+            tasks.add(Task("WHATSAPP", command))
+        }
 
-        if (tasks.isEmpty())
-            tasks.add(Task("AI", text))
+        if (tasks.isEmpty()) {
+            tasks.add(Task("AI", command))
+        }
 
         return tasks
     }

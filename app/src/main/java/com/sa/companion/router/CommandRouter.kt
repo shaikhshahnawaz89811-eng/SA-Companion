@@ -2,27 +2,32 @@ package com.sa.companion.router
 
 class CommandRouter {
 
-    fun route(command: String): String {
+    data class RouteResult(
+        val action: String,
+        val originalCommand: String
+    )
+
+    fun route(command: String): RouteResult {
 
         val text = command.lowercase().trim()
 
         return when {
 
             text.contains("time") ->
-                "TIME"
+                RouteResult("TIME", command)
 
             text.contains("battery") ->
-                "BATTERY"
+                RouteResult("BATTERY", command)
 
             text.contains("volume") ->
-                "VOLUME"
+                RouteResult("VOLUME", command)
 
             text.contains("message") ||
             text.contains("whatsapp") ->
-                "WHATSAPP"
+                RouteResult("WHATSAPP", command)
 
             else ->
-                "GROQ"
+                RouteResult("GROQ", command)
         }
     }
 }
