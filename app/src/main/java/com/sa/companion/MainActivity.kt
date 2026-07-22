@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
 
                 val tasks = TaskParser().parse(command)
 
-                val result = TaskExecutor(this).execute(tasks)
+                val result = TaskExecutor().execute(tasks)
 
                 spokenText = """
                 You Said:
