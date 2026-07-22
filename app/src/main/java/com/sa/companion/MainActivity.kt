@@ -23,7 +23,7 @@ import android.speech.tts.TextToSpeech
 import java.util.Locale
 import android.media.MediaPlayer
 import java.io.File
-import android.media.MediaPlayer
+import java.net.URL
 
 class MainActivity : ComponentActivity() {
     
