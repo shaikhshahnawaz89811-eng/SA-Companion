@@ -35,6 +35,12 @@ android {
         compose true
     }
 
+    externalNativeBuild {
+    cmake {
+        path "src/main/cpp/CMakeLists.txt"
+    }
+}
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
