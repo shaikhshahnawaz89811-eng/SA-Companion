@@ -102,7 +102,12 @@ class MainActivity : ComponentActivity() {
                 $result
                 """.trimIndent()
 
-                playSAVoice()
+                tts.speak(
+                    result,
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    "SA"
+                )
 
                 }
 
